@@ -2,14 +2,14 @@
   "schemaVersion": 1,
   "id": "airraid",
   "version": "${version}",
-  "name": "Air Raid",
-  "description": "Spawns Pillagers in aircrafts via command and natural raids",
+  "name": "AirRaid",
+  "description": "Adds aerial combat capabilities to Pillagers using Immersive Aircraft.",
   "authors": [
-    "Aleksandar Petrovic"
+    "Ace"
   ],
   "contact": {
-    "homepage": "https://fabricmc.net/",
-    "sources": "https://github.com/FabricMC/fabric-example-mod"
+    "homepage": "https://modrinth.com/mod/airraid",
+    "sources": "https://github.com/adunis/airraid"
   },
   "license": "MIT",
   "icon": "assets/airraid/icon.png",
@@ -23,10 +23,13 @@
     "airraid.mixins.json"
   ],
   "depends": {
-    "fabricloader": ">=0.14.21",
+    "fabricloader": ">=0.15.11",
     "minecraft": "~1.21.1",
-    "java": ">=17",
+    "java": ">=21",
     "fabric-api": "*",
-    "immersive_aircraft": "*"
+    "immersive_aircraft": ">=1.4.1"
+  },
+  "suggests": {
+    "modmenu": "*"
   }
 }

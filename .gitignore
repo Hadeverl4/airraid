@@ -1,4 +1,39 @@
-# Project exclude paths
-/.gradle/
-/build/
-/build/classes/java/main/
+# Gradle files
+.gradle/
+build/
+bin/
+out/
+
+# IntelliJ IDEA files
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# VS Code files
+.vscode/
+.factorypath
+.classpath
+.project
+.settings/
+
+# Eclipse files
+bin/
+
+# Mac OS files
+.DS_Store
+
+# Fabric/Minecraft Runtime files
+run/
+run_server/
+run_client/
+logs/
+debug.log
+debug.log.gz
+latest.log
+
+# Java Class Files
+*.class
+
+# Screenshot files
+screenshots/

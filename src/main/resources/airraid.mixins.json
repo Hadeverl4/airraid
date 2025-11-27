@@ -1,0 +1,12 @@
+{
+  "required": true,
+  "package": "ace.actually.airraid.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "mixins": [
+    "VehicleEntityMixin",
+    "RaidMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

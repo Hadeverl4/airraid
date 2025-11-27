@@ -1,4 +1,4 @@
-package com.example.addon.config;
+package ace.actually.airraid.config;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -17,19 +17,52 @@ public class IAAddonConfig {
     public static IAAddonConfig INSTANCE;
 
     public List<Faction> factions = new ArrayList<>();
+
+    // --- NEW: Vanilla Raid Configuration ---
+    public RaidConfig raidConfig = new RaidConfig();
+    // ---------------------------------------
+
     public int checkIntervalTicks = 200;
     public int minSpawnDistance = 60;
     public int spawnHeight = 40;
+
+    public static class RaidConfig {
+        public boolean enabled = true;
+        public float spawnChancePerWave = 0.4f; // 40% chance per wave to spawn air support
+        public int startWave = 3; // Only spawn from wave 3 onwards
+        public int squadSize = 2;
+
+        public Map<String, Integer> vehicles = new HashMap<>();
+        public List<String> mobs = new ArrayList<>(List.of(
+                "minecraft:pillager",
+                "minecraft:vindicator"
+        ));
+
+        // Weapons for Raids
+        public boolean enableCrossbows = true;
+        public boolean enableRotaryCannons = true;
+        public boolean enableBombBay = true; // Raids are destructive by nature
+
+        public String fuelItem = "minecraft:coal";
+        public Map<String, Integer> weaponAmmoCounts = new HashMap<>();
+
+        public RaidConfig() {
+            vehicles.put("immersive_aircraft:biplane", 60);
+            vehicles.put("immersive_aircraft:gyrodyne", 40);
+
+            weaponAmmoCounts.put("immersive_aircraft:rotary_cannon", 300);
+            weaponAmmoCounts.put("immersive_aircraft:heavy_crossbow", 600);
+            weaponAmmoCounts.put("immersive_aircraft:bomb_bay", 15);
+        }
+    }
 
     public static class Faction {
         public String name = "Default Raiders";
         public float ambushChance = 0.01f;
         public float structureSpawnChance = 0.10f;
 
-        // --- NEW: Parked Vehicle Settings ---
-        public float parkedVehicleChance = 0.05f; // 5% chance per check to spawn a parked plane
-        public int maxParkedVehicles = 2; // Max parked vehicles around a structure
-        // ------------------------------------
+        public float parkedVehicleChance = 0.05f;
+        public int maxParkedVehicles = 2;
 
         public List<String> structures = new ArrayList<>(List.of("minecraft:pillager_outpost"));
 

@@ -1,4 +1,4 @@
-package com.example.addon.mixin;
+package ace.actually.airraid.mixin;
 
 import immersive_aircraft.entity.*;
 import immersive_aircraft.entity.weapon.RotaryCannon;
@@ -31,6 +31,8 @@ import java.util.List;
 public abstract class VehicleEntityMixin {
 
     @Unique private int fireCooldown = 0;
+    @Unique private int burstTicks = 0;
+    @Unique private int burstCooldownTicks = 0;
 
     @Inject(method = "damage", at = @At(value = "INVOKE", target = "Limmersive_aircraft/entity/VehicleEntity;discard()V"))
     private void forceDropOnCreativeKill(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
@@ -70,55 +72,54 @@ public abstract class VehicleEntityMixin {
 
             boolean isVtol = vehicle instanceof AirshipEntity || vehicle instanceof GyrodyneEntity || vehicle instanceof QuadrocopterEntity;
 
-            boolean hasTurret = vehicle instanceof WarshipEntity;
+            // Weapon Capability & Type Detection
+            boolean isWarship = vehicle instanceof WarshipEntity;
+            boolean isRotary = false;
+            boolean isCrossbow = isWarship; // Warship turret behaves like crossbow
             boolean hasBombBay = false;
 
             if (vehicle instanceof InventoryVehicleEntity invVehicle) {
                 for (List<Weapon> list : invVehicle.getWeapons().values()) {
                     for (Weapon w : list) {
-                        if (w instanceof RotaryCannon) hasTurret = true;
+                        if (w instanceof RotaryCannon) isRotary = true;
+                        if (w.getStack().toString().contains("crossbow")) isCrossbow = true;
                         if (w instanceof BombBay || w.getStack().toString().contains("bomb")) hasBombBay = true;
                     }
                 }
             }
 
+            boolean hasTurret = isWarship || isRotary;
+
             // 2. Combat Flight Logic
             if (target != null) {
-                // --- COLLISION AVOIDANCE ---
+                // Collision Avoidance
                 Vec3d selfPos = self.getPos();
                 Vec3d targetPos = target.getPos();
                 Vec3d toTarget = targetPos.subtract(selfPos);
-                double realDist = toTarget.length(); // Keep track of real distance for firing range logic
+                double realDist = toTarget.length();
 
                 Vec3d avoidance = Vec3d.ZERO;
-                // Scan for nearby vehicles to avoid
                 List<Entity> nearbyVehicles = self.getWorld().getOtherEntities(self, self.getBoundingBox().expand(25.0), e -> e instanceof VehicleEntity);
 
                 for (Entity neighbor : nearbyVehicles) {
                     Vec3d toSelf = selfPos.subtract(neighbor.getPos());
                     double distSq = toSelf.lengthSquared();
-                    if (distSq < 625.0 && distSq > 0.01) { // Within 25 blocks
+                    if (distSq < 625.0 && distSq > 0.01) {
                         double dist = Math.sqrt(distSq);
-                        // Force increases as distance decreases.
-                        // Multiplier 2.5 ensures avoidance is prioritized over target tracking when very close.
                         double force = (25.0 - dist) / 25.0;
                         avoidance = avoidance.add(toSelf.normalize().multiply(force * 2.5));
                     }
                 }
 
-                // Calculate "Virtual Target"
-                // The plane will fly towards this point instead of the actual enemy
-                // This blends the desire to hit the enemy with the desire to not hit a friend
                 Vec3d desiredDir = toTarget.normalize().add(avoidance).normalize();
                 Vec3d virtualTargetPos = selfPos.add(desiredDir.multiply(realDist));
 
                 double dx = virtualTargetPos.x - self.getX();
                 double dy = virtualTargetPos.y - self.getY();
                 double dz = virtualTargetPos.z - self.getZ();
-                // recalculate hDist based on virtual target for steering math
                 double hDist = Math.sqrt(dx*dx + dz*dz);
 
-                // --- FLIGHT MATH ---
+                // Flight Inputs
                 int groundY = self.getWorld().getTopY(Heightmap.Type.MOTION_BLOCKING, (int)self.getX(), (int)self.getZ());
                 boolean unsafeLow = self.getY() < groundY + 15;
 
@@ -132,7 +133,6 @@ public abstract class VehicleEntityMixin {
                     double desiredY = target.getY() + 10;
                     if (hasBombBay) desiredY = target.getY() + 30;
 
-                    // Use dy from virtual target, so if avoidance pushes up, we fly up
                     if (self.getY() < desiredY - 5) { inputPitch = 1.0f; inputThrottle = 0.0f; }
                     else if (self.getY() < desiredY) { inputPitch = 1.0f; inputThrottle = hDist > 15 ? 0.6f : 0.0f; }
                     else if (self.getY() > desiredY + 10) { inputPitch = -1.0f; inputThrottle = hDist > 15 ? 0.6f : 0.0f; }
@@ -146,11 +146,8 @@ public abstract class VehicleEntityMixin {
                     if (unsafeLow) {
                         targetPitchDeg = -30.0f;
                     } else if (hasBombBay) {
-                        if (hDist > 20) {
-                            targetPitchDeg = (self.getY() > target.getY() + 40) ? 5.0f : 0.0f;
-                        } else {
-                            targetPitchDeg = 0.0f;
-                        }
+                        if (hDist > 20) targetPitchDeg = (self.getY() > target.getY() + 40) ? 5.0f : 0.0f;
+                        else targetPitchDeg = 0.0f;
                     } else if (isAirTarget) {
                         float leadYaw = angleToTarget;
                         if (hDist < 30) targetPitchDeg = -40.0f;
@@ -180,22 +177,20 @@ public abstract class VehicleEntityMixin {
                     inputPitch = MathHelper.clamp(elevator, -0.8f, 0.8f);
                 }
 
-                // Fire Trigger (Check REAL distance, not virtual)
+                // --- FIRE TRIGGER ---
                 if (hasBombBay) {
-                    // Re-calc horizontal distance to ACTUAL target for bombing accuracy
                     double realHDist = Math.sqrt(toTarget.x*toTarget.x + toTarget.z*toTarget.z);
                     if (realHDist < 4.0 && self.getY() > target.getY() + 5) wantToFire = true;
                 } else if (hasTurret) {
                     if (realDist < 120) wantToFire = true;
                 } else {
                     float tolerance = isVtol ? 35.0f : 25.0f;
-                    // For fixed guns, we use yawDiff derived from virtual target
-                    // This means if we are dodging a collision, we likely won't fire, which is good behavior
                     if (Math.abs(yawDiff) < tolerance && realDist < 120) wantToFire = true;
                 }
 
                 mob.lookAt(net.minecraft.command.argument.EntityAnchorArgumentType.EntityAnchor.EYES, target.getPos());
             } else {
+                // Patrol
                 if (self.getY() < self.getWorld().getSeaLevel() + 60) inputPitch = isVtol ? 0.3f : -0.1f;
                 inputThrottle = isVtol ? 0.3f : 0.8f;
                 inputYaw = 0.05f;
@@ -203,6 +198,38 @@ public abstract class VehicleEntityMixin {
 
             if (isVtol) vehicle.setInputs(inputYaw, inputPitch, inputThrottle);
             else vehicle.setInputs(inputYaw, 0.0f, inputPitch);
+
+            // --- BURST FIRE LOGIC ---
+            // Defaults (Crossbows/Warships)
+            int burstDuration = 100; // 5 Seconds fire
+            int burstRest = 200;     // 10 Seconds wait
+            int shotInterval = 10;   // Slow fire rate (2 shots/sec)
+
+            if (isRotary) {
+                burstDuration = 40;  // 2 Seconds fire
+                burstRest = 100;     // 5 Seconds wait
+                shotInterval = 2;    // Fast fire rate (10 shots/sec)
+            } else if (hasBombBay) {
+                burstDuration = 10;  // Short drop window
+                burstRest = 40;      // Short cooldown
+                shotInterval = 5;
+            }
+
+            // Burst State Machine
+            if (burstCooldownTicks > 0) {
+                burstCooldownTicks--;
+                wantToFire = false; // Suppress firing during cooldown
+            } else if (wantToFire) {
+                burstTicks++;
+                if (burstTicks >= burstDuration) {
+                    burstCooldownTicks = burstRest; // Trigger cooldown
+                    burstTicks = 0;
+                    wantToFire = false;
+                }
+            } else {
+                // Reset burst if we stop aiming/firing naturally
+                if (burstTicks > 0) burstTicks--;
+            }
 
             // --- EXECUTE FIRE ---
             if (wantToFire && fireCooldown <= 0) {
@@ -246,6 +273,14 @@ public abstract class VehicleEntityMixin {
 
                     if (isSafe) {
                         boolean fired = false;
+
+                        // 1. Fire Warship Turret (Special case, not in getWeapons map)
+                        if (isWarship) {
+                            ((WarshipEntity)vehicle).fireWeapon(-1, 0, aimDir);
+                            fired = true;
+                        }
+
+                        // 2. Fire Regular Weapons
                         for (List<Weapon> weaponList : invVehicle.getWeapons().values()) {
                             if (weaponList != null && !weaponList.isEmpty()) {
                                 for (Weapon weapon : weaponList) {
@@ -254,7 +289,7 @@ public abstract class VehicleEntityMixin {
                                 }
                             }
                         }
-                        if (fired) fireCooldown = 5;
+                        if (fired) fireCooldown = shotInterval;
                     }
                 }
             }

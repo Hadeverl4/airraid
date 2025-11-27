@@ -1,6 +1,6 @@
-package com.example.addon.util;
+package ace.actually.airraid.util;
 
-import com.example.addon.config.IAAddonConfig;
+import ace.actually.airraid.config.IAAddonConfig;
 import immersive_aircraft.entity.VehicleEntity;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.minecraft.registry.RegistryKeys;

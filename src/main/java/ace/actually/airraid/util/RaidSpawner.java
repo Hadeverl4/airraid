@@ -1,6 +1,6 @@
-package com.example.addon.util;
+package ace.actually.airraid.util;
 
-import com.example.addon.config.IAAddonConfig;
+import ace.actually.airraid.config.IAAddonConfig;
 import immersive_aircraft.entity.EngineVehicle;
 import immersive_aircraft.entity.inventory.VehicleInventoryDescription;
 import immersive_aircraft.entity.inventory.slots.SlotDescription;

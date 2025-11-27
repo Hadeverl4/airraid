@@ -1,7 +1,7 @@
-package com.example.addon;
+package ace.actually.airraid;
 
-import com.example.addon.config.IAAddonConfig;
-import com.example.addon.util.RaidSpawner;
+import ace.actually.airraid.config.IAAddonConfig;
+import ace.actually.airraid.util.RaidSpawner;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.context.CommandContext;

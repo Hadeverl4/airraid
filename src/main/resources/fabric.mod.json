@@ -1,12 +1,16 @@
-
 {
   "schemaVersion": 1,
   "id": "airraid",
   "version": "${version}",
-  "name": "AirRaid",
-  "description": "Spawns Pillagers in aircrafts via command",
-  "authors": ["You"],
-  "contact": {},
+  "name": "Air Raid",
+  "description": "Spawns Pillagers in aircrafts via command and natural raids",
+  "authors": [
+    "Aleksandar Petrovic"
+  ],
+  "contact": {
+    "homepage": "https://fabricmc.net/",
+    "sources": "https://github.com/FabricMC/fabric-example-mod"
+  },
   "license": "MIT",
   "icon": "assets/airraid/icon.png",
   "environment": "*",
@@ -19,10 +23,10 @@
     "airraid.mixins.json"
   ],
   "depends": {
-    "fabricloader": ">=0.15.11",
+    "fabricloader": ">=0.14.21",
     "minecraft": "~1.21.1",
-    "java": ">=21",
-    "fabric-api": "*"
+    "java": ">=17",
+    "fabric-api": "*",
+    "immersive_aircraft": "*"
   }
 }
-            

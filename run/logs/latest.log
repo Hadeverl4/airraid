@@ -96,3 +96,60 @@
 [21:54:52] [Render thread/INFO] (Minecraft) Created: 64x64x0 minecraft:textures/atlas/map_decorations.png-atlas
 [21:54:52] [Render thread/INFO] (Minecraft) Created: 1024x512x0 minecraft:textures/atlas/gui.png-atlas
 [21:54:52] [Render thread/WARN] (Minecraft) Shader rendertype_entity_translucent_emissive could not find sampler named Sampler2 in the specified shader program.
+[21:55:07] [Render thread/INFO] (Minecraft) Loaded 1317 recipes
+[21:55:07] [Render thread/INFO] (Minecraft) Loaded 1399 advancements
+[21:55:07] [Render thread/INFO] (BiomeModificationImpl) Applied 0 biome modifications to 0 of 64 new biomes in 1.864 ms
+[21:55:07] [Server thread/INFO] (Minecraft) Starting integrated minecraft server version 1.21.1
+[21:55:07] [Server thread/INFO] (Minecraft) Generating keypair
+[21:55:08] [Server thread/INFO] (Minecraft) Preparing start region for dimension minecraft:overworld
+[21:55:09] [Render thread/INFO] (Minecraft) Preparing spawn area: 0%
+[21:55:09] [Render thread/INFO] (Minecraft) Time elapsed: 567 ms
+[21:55:09] [Server thread/WARN] (TranslationConventionLogWarnings) 
+	Dev warning - Untranslated Item Tags detected. Please translate your item tags so other mods such as recipe viewers can properly display your tag's name.
+	The format desired is tag.item.<namespace>.<path> for the translation key with slashes in path turned into periods.
+	To disable this message, set this system property in your runs: `-Dfabric-tag-conventions-v2.missingTagTranslationWarning=SILENCED`.
+	To see individual untranslated item tags found, set the system property to `-Dfabric-tag-conventions-v2.missingTagTranslationWarning=VERBOSE`.
+	Default is `SHORT`.
+
+[21:55:09] [Server thread/INFO] (Minecraft) Changing view distance to 24, from 10
+[21:55:09] [Server thread/INFO] (Minecraft) Changing simulation distance to 12, from 0
+[21:55:10] [Server thread/INFO] (Minecraft) Player358[local:E:3405273b] logged in with entity id 79 at (3085.627341526857, 70.0, -286.42710069422037)
+[21:55:10] [Server thread/INFO] (Minecraft) Player358 joined the game
+[21:55:11] [Render thread/INFO] (Minecraft) Loaded 2 advancements
+[21:55:13] [Render thread/WARN] (Minecraft) Received passengers for unknown entity
+[21:55:14] [Render thread/WARN] (Minecraft) Received passengers for unknown entity
+[21:55:15] [Server thread/INFO] (Minecraft) Saving and pausing game...
+[21:55:15] [Server thread/INFO] (Minecraft) Saving chunks for level 'ServerLevel[New World]'/minecraft:overworld
+[21:55:15] [Server thread/INFO] (Minecraft) Saving chunks for level 'ServerLevel[New World]'/minecraft:the_end
+[21:55:15] [Server thread/INFO] (Minecraft) Saving chunks for level 'ServerLevel[New World]'/minecraft:the_nether
+[21:55:16] [Server thread/INFO] (Minecraft) [Player358: Teleported Player358 to 3072.500000, 69.000000, -319.500000]
+[21:55:16] [Render thread/INFO] (Minecraft) [System] [CHAT] Teleported Player358 to 3072.500000, 69.000000, -319.500000
+[21:55:17] [Server thread/INFO] (Minecraft) Saving and pausing game...
+[21:55:17] [Server thread/INFO] (Minecraft) Saving chunks for level 'ServerLevel[New World]'/minecraft:overworld
+[21:55:17] [Server thread/INFO] (Minecraft) Saving chunks for level 'ServerLevel[New World]'/minecraft:the_end
+[21:55:17] [Server thread/INFO] (Minecraft) Saving chunks for level 'ServerLevel[New World]'/minecraft:the_nether
+[21:55:18] [Render thread/WARN] (Minecraft) Received passengers for unknown entity
+[21:55:18] [Render thread/WARN] (Minecraft) Received passengers for unknown entity
+[21:55:18] [Render thread/WARN] (Minecraft) Received passengers for unknown entity
+[21:55:18] [Render thread/WARN] (Minecraft) Received passengers for unknown entity
+[21:55:18] [Render thread/WARN] (Minecraft) Received passengers for unknown entity
+[21:55:18] [Render thread/WARN] (Minecraft) Received passengers for unknown entity
+[21:55:18] [Render thread/WARN] (Minecraft) Received passengers for unknown entity
+[21:55:29] [Render thread/WARN] (Minecraft) Unable to play empty soundEvent: minecraft:entity.salmon.ambient
+[21:55:30] [Server thread/INFO] (Minecraft) Player358 was slain by Vindicator
+[21:55:30] [Render thread/INFO] (Minecraft) [System] [CHAT] Player358 was slain by Vindicator
+[21:55:30] [Render thread/INFO] (Minecraft) Loaded 38 advancements
+[21:55:33] [Render thread/INFO] (Minecraft) Stopping!
+[21:55:33] [Server thread/INFO] (Minecraft) Player358 lost connection: Disconnected
+[21:55:33] [Server thread/INFO] (Minecraft) Player358 left the game
+[21:55:33] [Server thread/INFO] (Minecraft) Stopping singleplayer server as player logged out
+[21:55:33] [Server thread/INFO] (Minecraft) Stopping server
+[21:55:33] [Server thread/INFO] (Minecraft) Saving players
+[21:55:33] [Server thread/INFO] (Minecraft) Saving worlds
+[21:55:33] [Server thread/INFO] (Minecraft) Saving chunks for level 'ServerLevel[New World]'/minecraft:overworld
+[21:55:33] [Server thread/INFO] (Minecraft) Saving chunks for level 'ServerLevel[New World]'/minecraft:the_end
+[21:55:33] [Server thread/INFO] (Minecraft) Saving chunks for level 'ServerLevel[New World]'/minecraft:the_nether
+[21:55:33] [Server thread/INFO] (Minecraft) ThreadedAnvilChunkStorage (New World): All chunks are saved
+[21:55:33] [Server thread/INFO] (Minecraft) ThreadedAnvilChunkStorage (DIM1): All chunks are saved
+[21:55:33] [Server thread/INFO] (Minecraft) ThreadedAnvilChunkStorage (DIM-1): All chunks are saved
+[21:55:33] [Server thread/INFO] (Minecraft) ThreadedAnvilChunkStorage: All dimensions are saved

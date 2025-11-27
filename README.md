@@ -3,9 +3,7 @@
 **AirRaid** is a Fabric mod for Minecraft 1.21.1 that brings aerial warfare to the Illager factions. By integrating with [Immersive Aircraft](https://modrinth.com/mod/immersive-aircraft), Pillagers, Vindicators, and Witches can now pilot Biplanes, Gyrodynes, and Airships to rain fire down upon players and villages.
 
 
-
-Uploading WhatsApp Video 2025-11-27 at 8.37.55 PM(1)(1).mp4…
-
+https://github.com/user-attachments/assets/008c28cc-f961-477b-b465-bb9ab76f9099
 
 
 ## ✨ Features

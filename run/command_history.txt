@@ -1,0 +1,50 @@
+/gamemode survival
+/airraid immersive_aircraft:biplane
+/airraid immersive_aircraft:airship
+/airraid immersive_aircraft:biplane
+/gamemode creative
+/airraid immersive_aircraft:biplane
+/airraid immersive_aircraft:airship
+/time set day
+/airraid immersive_aircraft:airship
+/airraid immersive_aircraft:biplane
+/airraid immersive_aircraft:biplanet
+/airraid immersive_aircraft:biplane
+/time set day
+/airraid immersive_aircraft:quadrocopter
+/airraid immersive_aircraft:bullet
+/airraid immersive_aircraft:cargo_airship
+/airraid immersive_aircraft:warship
+/airraid immersive_aircraft:biplane
+/airraid immersive_aircraft:warship
+/airraid immersive_aircraft:biplane
+/airraid single immersive_aircraft:biplane
+/airraid squadron immersive_aircraft:biplane
+/gamemode survival
+/airraid squadron immersive_aircraft:biplane
+/gamemode creative
+/gamemode survival
+/airraid squadron immersive_aircraft:biplane
+/time set day
+/airraid squadron immersive_aircraft:biplane
+/gamemode creative
+/airraid squadron immersive_aircraft:biplane
+/airraid squadron immersive_aircraft:airship
+/airraid squadron immersive_aircraft:biplane
+/airraid squadron immersive_aircraft:airship
+/airraid squadron immersive_aircraft:biplane
+/airraid squadron immersive_aircraft:airship
+/airraid squadron immersive_aircraft:biplane
+/airraid squadron immersive_aircraft:airship
+/airraid squadron immersive_aircraft:biplane
+/airraid squadron immersive_aircraft:airship
+/time set day
+/airraid squadron immersive_aircraft:biplane
+/airraid squadron 10 immersive_aircraft:biplane immersive_aircraft:bomb_bay
+/airraid squadron 10 immersive_aircraft:biplane immersive_aircraft:heavy_crossbow
+/airraid spawn 10 immersive_aircraft:biplane immersive_aircraft:rotary_cannon
+/time set day
+/airraid spawn 10 immersive_aircraft:biplane immersive_aircraft:rotary_cannon
+/airraid spawn 20 immersive_aircraft:biplane immersive_aircraft:bomb_bay
+/airraid reload
+/airraid spawn 20 immersive_aircraft:biplane immersive_aircraft:heavy_crossbow

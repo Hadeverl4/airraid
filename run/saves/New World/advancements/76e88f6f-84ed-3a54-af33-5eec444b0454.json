@@ -1,0 +1,25 @@
+{
+  "minecraft:recipes/decorations/crafting_table": {
+    "criteria": {
+      "unlock_right_away": "2025-11-27 17:01:23 +0100"
+    },
+    "done": true
+  },
+  "minecraft:adventure/adventuring_time": {
+    "criteria": {
+      "minecraft:beach": "2025-11-27 17:01:29 +0100",
+      "minecraft:forest": "2025-11-27 17:01:39 +0100",
+      "minecraft:river": "2025-11-27 17:02:28 +0100",
+      "minecraft:savanna": "2025-11-27 17:01:24 +0100",
+      "minecraft:plains": "2025-11-27 17:02:45 +0100"
+    },
+    "done": false
+  },
+  "minecraft:adventure/ol_betsy": {
+    "criteria": {
+      "shot_crossbow": "2025-11-27 17:03:27 +0100"
+    },
+    "done": true
+  },
+  "DataVersion": 3955
+}

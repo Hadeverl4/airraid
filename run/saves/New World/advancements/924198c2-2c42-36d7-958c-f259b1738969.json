@@ -1,0 +1,43 @@
+{
+  "minecraft:recipes/decorations/crafting_table": {
+    "criteria": {
+      "unlock_right_away": "2025-11-27 17:18:55 +0100"
+    },
+    "done": true
+  },
+  "minecraft:adventure/adventuring_time": {
+    "criteria": {
+      "minecraft:dark_forest": "2025-11-27 19:57:27 +0100",
+      "minecraft:sparse_jungle": "2025-11-27 17:18:56 +0100",
+      "minecraft:river": "2025-11-27 17:19:27 +0100",
+      "minecraft:birch_forest": "2025-11-27 19:57:15 +0100",
+      "minecraft:bamboo_jungle": "2025-11-27 17:20:18 +0100"
+    },
+    "done": false
+  },
+  "minecraft:adventure/ol_betsy": {
+    "criteria": {
+      "shot_crossbow": "2025-11-27 17:19:21 +0100"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/chest": {
+    "criteria": {
+      "has_lots_of_items": "2025-11-27 19:57:13 +0100"
+    },
+    "done": true
+  },
+  "minecraft:recipes/misc/firework_rocket_simple": {
+    "criteria": {
+      "has_gunpowder": "2025-11-27 19:57:13 +0100"
+    },
+    "done": true
+  },
+  "minecraft:recipes/redstone/tnt": {
+    "criteria": {
+      "has_gunpowder": "2025-11-27 19:57:13 +0100"
+    },
+    "done": true
+  },
+  "DataVersion": 3955
+}

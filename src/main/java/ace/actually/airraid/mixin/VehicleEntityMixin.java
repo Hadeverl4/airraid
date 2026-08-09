@@ -38,7 +38,7 @@ public abstract class VehicleEntityMixin {
     private void forceDropOnCreativeKill(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
         Entity self = (Entity) (Object) this;
         VehicleEntity vehicle = (VehicleEntity) (Object) this;
-        if (self.getFirstPassenger() instanceof MobEntity) {
+        if (self.getFirstPassenger() instanceof RaiderEntity) {
             vehicle.dropStack(new ItemStack(vehicle.asItem()));
         }
     }
@@ -52,7 +52,7 @@ public abstract class VehicleEntityMixin {
 
         Entity passenger = self.getFirstPassenger();
 
-        if (passenger instanceof MobEntity mob) {
+        if (passenger instanceof RaiderEntity mob) {
             float inputYaw = 0.0f;
             float inputPitch = 0.0f;
             float inputThrottle = 0.0f;

@@ -25,6 +25,7 @@ public class IAAddonConfig {
     public int checkIntervalTicks = 200;
     public int minSpawnDistance = 60;
     public int spawnHeight = 40;
+    public int targetAcquisitionRange = 100;
 
     public static class RaidConfig {
         public boolean enabled = true;

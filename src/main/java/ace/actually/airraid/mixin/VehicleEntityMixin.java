@@ -1,5 +1,6 @@
 package ace.actually.airraid.mixin;
 
+import ace.actually.airraid.config.IAAddonConfig;
 import immersive_aircraft.entity.*;
 import immersive_aircraft.entity.weapon.RotaryCannon;
 import immersive_aircraft.entity.weapon.Weapon;
@@ -64,7 +65,7 @@ public abstract class VehicleEntityMixin {
             if (target == null) {
                 target = self.getWorld().getPlayers().stream()
                         .filter(p -> !p.isSpectator())
-                        .filter(p -> p.squaredDistanceTo(self) < 300 * 300)
+                        .filter(p -> p.squaredDistanceTo(self) < Math.pow(IAAddonConfig.INSTANCE.targetAcquisitionRange, 2))
                         .min(Comparator.comparingDouble(p -> p.squaredDistanceTo(self)))
                         .orElse(null);
                 if (target != null) mob.setTarget(target);

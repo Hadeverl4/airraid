@@ -9,6 +9,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
+import net.minecraft.world.World;
 
 public class IAAddonConfig {
     private static final File CONFIG_FILE = FabricLoader.getInstance().getConfigDir().resolve("ia_pillager_addon.json").toFile();
@@ -18,14 +19,52 @@ public class IAAddonConfig {
 
     public List<Faction> factions = new ArrayList<>();
 
-    // --- NEW: Vanilla Raid Configuration ---
+    // --- Vanilla Raid Configuration ---
     public RaidConfig raidConfig = new RaidConfig();
-    // ---------------------------------------
+    // ----------------------------------
+
+    // --- Village Defense Configuration ---
+    public VillageConfig villageConfig = new VillageConfig();
+    // -------------------------------------
 
     public int checkIntervalTicks = 200;
     public int minSpawnDistance = 60;
     public int spawnHeight = 40;
     public int targetAcquisitionRange = 100;
+    public int maxFlightHeight = -1;
+    public int searchDurationSeconds = 45;
+
+    public static int getMaxFlightHeight(World world) {
+        if (INSTANCE != null && INSTANCE.maxFlightHeight > 0) {
+            return INSTANCE.maxFlightHeight;
+        }
+        int worldMaxY = world.getBottomY() + world.getHeight();
+        int seaLevel = world.getSeaLevel();
+        int availableSky = Math.max(worldMaxY - seaLevel, 60);
+        return seaLevel + (int) (availableSky * 0.40f);
+    }
+
+    public static class VillageConfig {
+        public boolean enabled = true;
+        public float parkedVehicleChance = 0.3f;
+        public int maxParkedVehicles = 1;
+        public List<String> structures = new ArrayList<>(List.of(
+                "minecraft:village_plains",
+                "minecraft:village_desert",
+                "minecraft:village_savanna",
+                "minecraft:village_snowy",
+                "minecraft:village_taiga"
+        ));
+        public Map<String, Integer> vehicles = new HashMap<>();
+        public String fuelItem = "minecraft:coal";
+        public String weaponItem = "immersive_aircraft:heavy_crossbow";
+        public int ammoCount = 64;
+
+        public VillageConfig() {
+            vehicles.put("immersive_aircraft:biplane", 60);
+            vehicles.put("immersive_aircraft:gyrodyne", 40);
+        }
+    }
 
     public static class RaidConfig {
         public boolean enabled = true;
@@ -109,6 +148,9 @@ public class IAAddonConfig {
             INSTANCE.factions.add(new Faction());
             save();
         }
+        if (INSTANCE.targetAcquisitionRange <= 0) INSTANCE.targetAcquisitionRange = 100;
+        if (INSTANCE.searchDurationSeconds <= 0) INSTANCE.searchDurationSeconds = 45;
+        if (INSTANCE.villageConfig == null) INSTANCE.villageConfig = new VillageConfig();
     }
 
     public static void save() {

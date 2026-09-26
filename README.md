@@ -1,57 +1,92 @@
-# AirRaid ✈️
+# âœˆï¸ HyperRaid
 
-**AirRaid** is a Fabric mod for Minecraft 1.21.1 that brings aerial warfare to the Illager factions. By integrating with [Immersive Aircraft](https://modrinth.com/mod/immersive-aircraft), Pillagers, Vindicators, and Witches can now pilot Biplanes, Gyrodynes, and Airships to rain fire down upon players and villages.
+[![Minecraft](https://img.shields.io/badge/Minecraft-1.21.1-brightgreen.svg)](https://minecraft.net/)
+[![Fabric](https://img.shields.io/badge/Loader-Fabric-blue.svg)](https://fabricmc.net/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
+**HyperRaid** is an overhauled aerial warfare mod for Minecraft 1.21.1 (Fabric), built on top of [Immersive Aircraft](https://modrinth.com/mod/immersive-aircraft). It transforms the skies into a dynamic, two-faction theater of war featuring **Pillager Air Raids** and **Village Air Defense** with intelligent, tactical AI.
 
-https://github.com/user-attachments/assets/008c28cc-f961-477b-b465-bb9ab76f9099
+Originally forked and heavily expanded from *AirRaid* by Ace.
 
+---
 
-## ✨ Features
+## ðŸŒŸ Key Features
 
-*   **Aerial AI**: Custom AI logic allows mobs to fly aircraft, perform strafing runs, use rotary cannons, drop bombs, and dogfight with players.
-*   **Natural Ambushes**: While exploring the world, you may be ambushed by a roaming squadron of Illager aircraft.
-*   **Structure Spawning**: Pillager Outposts now spawn with parked aircraft and can launch defensive squadrons when players get too close.
-*   **Raid Integration**: Vanilla Village Raids are significantly harder! From **Wave 3** onwards, the Illagers will call in air support.
-*   **Configuration**: Every aspect of the spawning logic, from squad sizes to ammunition counts, is fully configurable.
+### âš”ï¸ Two-Faction Allegiance & Dogfights
+* **Pillager Raiders:** Pilot armed biplanes, airships, and gyrodynes to raid players and villages.
+* **Guard Villager Interceptors:** When villages are attacked, nearby Guard Villagers scramble to available defense aircraft, take off, and dogfight enemy invaders to protect their home!
 
-## 🛠️ Requirements
+### ðŸš¨ Tactical Scramble AI
+* During peacetime, both Pillagers and Guard Villagers stay on foot with their default weapons.
+* When a threat is detected (Raid, player approach, or enemy incursion), mobs sprint to empty aircraft preloaded with fuel and scramble into the skies!
 
-*   Minecraft **1.21.1**
-*   [Fabric Loader](https://fabricmc.net/)
-*   [Fabric API](https://modrinth.com/mod/fabric-api)
-*   [Immersive Aircraft](https://modrinth.com/mod/immersive-aircraft)
+### ðŸ‘ï¸ True Line-of-Sight & Shelter Mechanics
+* **No more X-ray vision:** Aircraft AI requires direct visual line of sight (`canSee`) to acquire targets.
+* **Take Shelter:** Players can hide beneath roofs, inside houses, caves, or under dense canopies to avoid being spotted.
+* **Breaking Contact:** If a target stays out of sight for 5 seconds, pilots lose visual lock.
 
-## 🎮 Commands
+### â±ï¸ Loiter, Search & Automatic Withdrawal
+* After losing visual contact, raiders don't circle forever; they circle in search mode for **45 seconds**.
+* If no targets reappear, the squadron throttles up, flies straight toward the horizon, and cleanly despawns once out of player range.
 
-*   `/airraid spawn <count> [vehicle] [weapon]`
-    *   Spawns a squadron immediately at your location.
-    *   *Requires OP (Level 2)*.
-*   `/airraid reload`
-    *   Reloads the `ia_pillager_addon.json` configuration file without restarting the server.
+### ðŸ›¬ Smart Landing & Recovery (Guard Villagers)
+* Once the threat is eliminated and a 15-second safety timer expires, Guard Villagers begin an automated landing sequence:
+  * Avoids water/lava.
+  * Throttles down, spirals into a gentle glide-slope, and flares softly upon touchdown.
+  * Shuts off the engine, dismounts, and resumes foot patrol in the village!
 
-## ⚙️ Configuration
+### ðŸ”ï¸ Adaptive Flight Ceiling & Anti-Space Bug
+* Eliminates the bug where planes looped nose-up (-40Â°) into orbit.
+* Automatically scales the flight altitude ceiling based on world dimension height (around Y=165 in default Overworld, below the clouds).
+* Features automatic terrain collision avoidance over high mountain peaks.
 
-The config file is located at `config/ia_pillager_addon.json`.
+---
 
-### Global Settings
-*   `checkIntervalTicks`: How often the mod checks for ambush/structure spawns (Default: 200 ticks / 10 seconds).
-*   `minSpawnDistance`: Minimum distance from the player to spawn aircraft (Default: 60 blocks).
-*   `spawnHeight`: How high above the player aircraft spawn (Default: 40 blocks).
+## âš™ï¸ Configuration (`ia_pillager_addon.json`)
 
-### Factions (Natural Spawning)
-Controls random ambushes and structure generation.
-*   `ambushChance`: Chance per check interval to spawn a random ambush (0.0 - 1.0).
-*   `structureSpawnChance`: Chance to spawn a defensive squadron near an Outpost.
-*   `parkedVehicleChance`: Chance to spawn empty, parked aircraft at an Outpost.
-*   `vehicles`: A weighted list of which aircraft spawn.
-*   `weaponAmmoCounts`: Defines how much ammo (arrows/gunpowder/tnt) the AI spawns with.
+Located in your `.minecraft/config/ia_pillager_addon.json`:
 
-### Raid Config (Vanilla Raids)
-*   `enabled`: If false, disables raid integration.
-*   `startWave`: The raid wave number where air support begins (Default: 3).
-*   `spawnChancePerWave`: The chance air support arrives during a specific wave.
-*   `enableBombBay`: If true, raiders will drop TNT on villages.
+```json
+{
+  "factions": [
+    {
+      "name": "Default Raiders",
+      "ambushChance": 0.01,
+      "structureSpawnChance": 0.05,
+      "parkedVehicleChance": 0.01,
+      "maxParkedVehicles": 1
+    }
+  ],
+  "raidConfig": {
+    "enabled": true,
+    "spawnChancePerWave": 0.05,
+    "startWave": 5,
+    "squadSize": 1
+  },
+  "villageConfig": {
+    "enabled": true,
+    "parkedVehicleChance": 0.3,
+    "maxParkedVehicles": 1
+  },
+  "searchDurationSeconds": 45,
+  "maxFlightHeight": -1,
+  "targetAcquisitionRange": 100
+}
+```
 
-## 🤝 License
+* **`maxFlightHeight`**: `-1` for automatic height based on world dimensions, or set an absolute Y value (e.g. `160`).
+* **`searchDurationSeconds`**: How long raiders loiter and search before withdrawing (Default: `45`).
+* **`villageConfig`**: Controls village defense aircraft spawning.
 
-This mod is licensed under the MIT License.
+---
+
+## ðŸ“œ Commands
+* `/hyperraid reload` (or `/airraid reload`) - Reloads configuration without restarting the game.
+* `/hyperraid spawn <count> [vehicle] [weapon]` - Spawns a custom test squadron.
+
+---
+
+## ðŸ“„ License & Credits
+* Distributed under the **MIT License**.
+* Core engine and inspiration derived from the original [AirRaid](https://github.com/adunis/airraid) by Ace.
+* Overhauled and maintained by **Hadeverl4** as part of the **Hyper** ecosystem.

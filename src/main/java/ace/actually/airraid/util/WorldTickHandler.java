@@ -59,6 +59,23 @@ public class WorldTickHandler implements ServerTickEvents.EndTick {
                         }
                     }
                 }
+
+                // C. Village Defense Vehicle Check
+                if (IAAddonConfig.INSTANCE.villageConfig != null && IAAddonConfig.INSTANCE.villageConfig.enabled) {
+                    var vCfg = IAAddonConfig.INSTANCE.villageConfig;
+                    if (vCfg.parkedVehicleChance > 0 && vCfg.maxParkedVehicles > 0) {
+                        BlockPos villagePos = getNearestVillagePos(world, player.getBlockPos(), vCfg);
+                        if (villagePos != null) {
+                            if (world.random.nextFloat() < vCfg.parkedVehicleChance) {
+                                int existing = world.getEntitiesByClass(VehicleEntity.class,
+                                        new Box(villagePos).expand(60.0), e -> true).size();
+                                if (existing < vCfg.maxParkedVehicles) {
+                                    RaidSpawner.spawnVillageDefenseVehicle(world, villagePos, vCfg);
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
     }
@@ -72,6 +89,18 @@ public class WorldTickHandler implements ServerTickEvents.EndTick {
                     net.minecraft.registry.tag.TagKey.of(RegistryKeys.STRUCTURE, Identifier.of(structId)),
                     pos, 100, false);
 
+            if (found != null && Math.sqrt(found.getSquaredDistance(pos)) < 100) {
+                return found;
+            }
+        }
+        return null;
+    }
+
+    private BlockPos getNearestVillagePos(ServerWorld world, BlockPos pos, IAAddonConfig.VillageConfig vCfg) {
+        for (String structId : vCfg.structures) {
+            BlockPos found = world.locateStructure(
+                    net.minecraft.registry.tag.TagKey.of(RegistryKeys.STRUCTURE, Identifier.of(structId)),
+                    pos, 100, false);
             if (found != null && Math.sqrt(found.getSquaredDistance(pos)) < 100) {
                 return found;
             }

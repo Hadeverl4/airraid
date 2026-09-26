@@ -1,15 +1,15 @@
 {
   "schemaVersion": 1,
-  "id": "airraid",
+  "id": "hyperraid",
   "version": "${version}",
-  "name": "AirRaid",
-  "description": "Adds aerial combat capabilities to Pillagers using Immersive Aircraft.",
+  "name": "HyperRaid",
+  "description": "An overhauled aerial combat mod featuring Pillager air raids, village air defense with Guard Villagers, line-of-sight targeting, smart landing & scramble AI.",
   "authors": [
+    "Hadeverl4",
     "Ace"
   ],
   "contact": {
-    "homepage": "https://modrinth.com/mod/airraid",
-    "sources": "https://github.com/adunis/airraid"
+    "sources": "https://github.com/Hadeverl4/hyperraid"
   },
   "license": "MIT",
   "icon": "assets/airraid/icon.png",
@@ -20,7 +20,7 @@
     ]
   },
   "mixins": [
-    "airraid.mixins.json"
+    "hyperraid.mixins.json"
   ],
   "depends": {
     "fabricloader": ">=0.15.11",

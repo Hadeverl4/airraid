@@ -18,14 +18,14 @@ import net.minecraft.util.Identifier;
 public class AirRaidCommand {
 
     public static void register(CommandDispatcher<ServerCommandSource> dispatcher) {
-        dispatcher.register(CommandManager.literal("airraid")
+        var hyperRaidNode = dispatcher.register(CommandManager.literal("hyperraid")
                 .requires(source -> source.hasPermissionLevel(2))
 
                 // --- RELOAD COMMAND ---
                 .then(CommandManager.literal("reload")
                         .executes(ctx -> {
                             IAAddonConfig.load();
-                            ctx.getSource().sendFeedback(() -> Text.literal("IA Pillager Addon config reloaded!"), true);
+                            ctx.getSource().sendFeedback(() -> Text.literal("HyperRaid config reloaded!"), true);
                             return 1;
                         })
                 )
@@ -43,6 +43,9 @@ public class AirRaidCommand {
                         )
                 )
         );
+
+        // Backward-compatible alias
+        dispatcher.register(CommandManager.literal("airraid").redirect(hyperRaidNode));
     }
 
     private static int executeSpawn(CommandContext<ServerCommandSource> context, int count, Identifier vehicleId, Identifier weaponId) throws CommandSyntaxException {

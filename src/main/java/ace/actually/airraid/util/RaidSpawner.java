@@ -2,6 +2,7 @@ package ace.actually.airraid.util;
 
 import ace.actually.airraid.config.IAAddonConfig;
 import immersive_aircraft.entity.EngineVehicle;
+import immersive_aircraft.entity.VehicleEntity;
 import immersive_aircraft.entity.inventory.VehicleInventoryDescription;
 import immersive_aircraft.entity.inventory.slots.SlotDescription;
 import net.minecraft.entity.Entity;
@@ -31,12 +32,83 @@ public class RaidSpawner {
         double spawnX = targetPos.x + Math.sin(angle) * distance;
         double spawnZ = targetPos.z + Math.cos(angle) * distance;
         double spawnY = targetPos.y + IAAddonConfig.INSTANCE.spawnHeight;
+        int maxHeight = IAAddonConfig.getMaxFlightHeight(world);
+        if (maxHeight > 0 && spawnY > maxHeight) {
+            spawnY = Math.max(targetPos.y + 10, maxHeight - 10);
+        }
 
         double dx = targetPos.x - spawnX;
         double dz = targetPos.z - spawnZ;
         float yaw = (float)(Math.toDegrees(Math.atan2(dz, dx)) - 90.0F);
 
         spawnSquadronAt(world, spawnX, spawnY, spawnZ, yaw, faction);
+    }
+
+    // --- Village Defense Vehicle Spawning ---
+    public static void spawnVillageDefenseVehicle(ServerWorld world, BlockPos center, IAAddonConfig.VillageConfig cfg) {
+        Random random = world.random;
+        double angle = random.nextDouble() * 2 * Math.PI;
+        double dist = 12 + random.nextDouble() * 15;
+
+        int x = center.getX() + (int)(Math.sin(angle) * dist);
+        int z = center.getZ() + (int)(Math.cos(angle) * dist);
+
+        int y = world.getTopY(Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, x, z);
+        if (y <= world.getBottomY()) return;
+
+        BlockPos spawnPos = new BlockPos(x, y, z);
+        if (world.getBlockState(spawnPos).isLiquid() || world.getFluidState(spawnPos).isStill()) return;
+
+        Identifier vehicleId = pickWeighted(cfg.vehicles, random);
+        if (vehicleId == null) return;
+
+        EntityType<?> type = Registries.ENTITY_TYPE.get(vehicleId);
+        Entity entity = type.create(world);
+        if (!(entity instanceof VehicleEntity vehicle)) return;
+
+        float yaw = random.nextFloat() * 360.0f;
+        vehicle.refreshPositionAndAngles(x, y + 1, z, yaw, 0.0f);
+
+        if (vehicle instanceof EngineVehicle engineVehicle) {
+            Inventory inv = engineVehicle.getInventory();
+            Set<Integer> protectedSlots = new HashSet<>();
+
+            Item fuelItem = Registries.ITEM.get(Identifier.of(cfg.fuelItem));
+            if (fuelItem == Items.AIR) fuelItem = Items.COAL;
+
+            List<SlotDescription> boilerSlots = engineVehicle.getInventoryDescription()
+                    .getSlots(VehicleInventoryDescription.BOILER);
+            for (SlotDescription slot : boilerSlots) {
+                protectedSlots.add(slot.index());
+                inv.setStack(slot.index(), new ItemStack(fuelItem, 64));
+            }
+
+            Item weaponItem = Registries.ITEM.get(Identifier.of(cfg.weaponItem));
+            if (weaponItem != Items.AIR) {
+                List<SlotDescription> weaponSlots = engineVehicle.getInventoryDescription()
+                        .getSlots(VehicleInventoryDescription.WEAPON);
+                if (!weaponSlots.isEmpty()) {
+                    int weaponIndex = weaponSlots.get(0).index();
+                    inv.setStack(weaponIndex, new ItemStack(weaponItem));
+                    protectedSlots.add(weaponIndex);
+                }
+
+                Item ammoItem = Items.ARROW;
+                int ammoNeeded = cfg.ammoCount;
+                for (int i = 0; i < inv.size(); i++) {
+                    if (protectedSlots.contains(i)) continue;
+                    if (!inv.getStack(i).isEmpty()) continue;
+                    if (ammoNeeded <= 0) break;
+                    int toAdd = Math.min(ammoNeeded, ammoItem.getMaxCount());
+                    inv.setStack(i, new ItemStack(ammoItem, toAdd));
+                    ammoNeeded -= toAdd;
+                }
+            }
+
+            engineVehicle.setEngineTarget(0.0f);
+        }
+
+        world.spawnEntity(vehicle);
     }
 
     // --- Parked Vehicle Spawning ---
@@ -99,6 +171,8 @@ public class RaidSpawner {
             z -= Math.cos(perpRads) * (offsetDist * formationIndex);
         }
 
+        int maxHeight = IAAddonConfig.getMaxFlightHeight(world);
+        if (maxHeight > 0 && originY > maxHeight) originY = maxHeight - 5;
         if (originY > world.getHeight()) originY = world.getHeight() - 10;
 
         vehicle.refreshPositionAndAngles(x, originY, z, yaw, 0.0f);

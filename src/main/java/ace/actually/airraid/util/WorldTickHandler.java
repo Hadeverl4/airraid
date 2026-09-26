@@ -21,6 +21,7 @@ public class WorldTickHandler implements ServerTickEvents.EndTick {
         ticks = 0;
 
         for (ServerWorld world : server.getWorlds()) {
+            if (world.getRegistryKey() != net.minecraft.world.World.OVERWORLD) continue;
             for (ServerPlayerEntity player : world.getPlayers()) {
                 if (player.isSpectator() || player.isCreative()) continue;
 

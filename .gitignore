@@ -37,3 +37,15 @@ latest.log
 
 # Screenshot files
 screenshots/
+
+# Personal and Agent workflow files
+AGENTS.md
+GEMINI.md
+.agents/
+.gemini/
+
+# Build logs and temporary outputs
+*.log
+*_log.txt
+*_output*.txt
+build_*.txt

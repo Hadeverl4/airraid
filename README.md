@@ -6,7 +6,7 @@
 
 **HyperRaid** is an intense airborne combat and aerial raid mod for Minecraft (Fabric 1.21.1), integrating seamlessly with [Immersive Aircraft](https://modrinth.com/mod/immersive-aircraft).
 
-Originally forked and heavily expanded from *AirRaid* by Ace.
+Originally forked and heavily expanded from *AirRaid* by [adunis (Ace)](https://github.com/adunis).
 
 ---
 
@@ -88,5 +88,5 @@ Located in your `.minecraft/config/ia_pillager_addon.json`:
 
 ## 📄 License & Credits
 * Distributed under the **MIT License**.
-* Core engine and inspiration derived from the original [AirRaid](https://github.com/adunis/airraid) by Ace.
+* Core engine and inspiration derived from the original [AirRaid](https://github.com/adunis/airraid) by [adunis (Ace)](https://github.com/adunis).
 * Overhauled and maintained by **Hadeverl4** as part of the **Hyper** ecosystem.
